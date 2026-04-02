@@ -1,3 +1,4 @@
+import Lenis from "@studio-freight/lenis";
 import React, { useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -10,8 +11,16 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPage';
 import EnrollNow from './pages/EnrollNow';
 import Courses from './pages/Courses';
-import Pricing from './pages/Pricing';
+// import Pricing from './pages/Pricing';
 import Community from './pages/Community';
+// import Checkout from "./pages/Checkout";
+import HoudiniCourse from './pages/HoudiniCourse'
+import BlenderCourse from './pages/BlenderCourse'
+import NukeCourse from './pages/NukeCourse'
+import UnrealCourse from './pages/UnrealCourse'
+import Contact from './components/Contact'
+import FAQ from './pages/FAQ'
+
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.config({ nullTargetWarn: false });
@@ -26,10 +35,34 @@ function ScrollToTop() {
 
 function MainApp() {
   useLayoutEffect(() => {
-    // Global clean up for scroll triggers (helps with React StrictMode double invocation)
+
+    // 🔥 INIT LENIS
+    const lenis = new Lenis({
+      duration: 1.2,
+      smooth: true,
+      smoothTouch: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // 🔥 SYNC GSAP WITH LENIS
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    // 🔥 CLEANUP
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
+      lenis.destroy();
     };
+
   }, []);
 
   return (
@@ -40,11 +73,18 @@ function MainApp() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/pricing" element={<Pricing />} />
+          {/* <Route path="/pricing" element={<Pricing />} /> */}
           <Route path="/community" element={<Community />} />
           <Route path="/enroll" element={<EnrollNow />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          {/* <Route path="/checkout" element={<Checkout />} /> */}
+          <Route path="/course/houdini-animation" element={<HoudiniCourse />} />
+          <Route path="/course/blender" element={<BlenderCourse />} />
+          <Route path="/course/nuke" element={<NukeCourse />} />
+          <Route path="/course/unreal" element={<UnrealCourse />} /> 
+          <Route path="/contact" element={<Contact />} /> 
+          <Route path="/faq" element={<FAQ />} />
         </Routes>
       </main>
       <Footer />

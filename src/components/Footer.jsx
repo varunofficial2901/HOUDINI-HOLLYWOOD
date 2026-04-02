@@ -1,100 +1,147 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { PlayCircle, Globe, MessageCircle, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const products = [
-  { icon: "🎬", name: "Animation Courses", desc: "Learn frame by frame", link: "#" },
-  { icon: "🎨", name: "Design Fundamentals", desc: "Master shapes & color", link: "#" },
-  { icon: "🖥️", name: "3D Modeling", desc: "Build in three dimensions", badge: "NEW", link: "#" },
-  { icon: "🎭", name: "Character Design", desc: "Bring characters to life", badge: "POPULAR", link: "#" },
-  { icon: "🎵", name: "Motion + Sound", desc: "Sync visuals with audio", link: "#" },
-  { icon: "🏆", name: "Certification", desc: "Get industry recognized", link: "#" },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
+  const footerRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".footer-links",
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 90%",
+          },
+        }
+      );
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer className="border-t border-white/5 bg-[var(--card)]/50 pt-12 pb-6">
+    <footer ref={footerRef} className="border-t border-white/5 bg-[var(--card)]/50 pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          
-          {/* Brand Column */}
-          <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center gap-2 mb-3">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-10">
+
+          {/* BRAND */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
               <PlayCircle className="w-5 h-5 text-blue-500" />
               <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-500">
-                Houdini Hollywood
+                Creative India School
               </span>
             </div>
-            <p className="text-[var(--muted)] text-[0.78rem] leading-relaxed mb-3">
+
+            <p className="text-[var(--muted)] text-sm leading-relaxed mb-4">
               Empowering creators with premium animation courses. Learn from the best, become the best.
             </p>
-            <div className="flex gap-[0.8rem] mt-5">
-              <a href="#" className="text-[var(--muted)] hover:text-white transition-colors">
+
+            <div className="flex gap-4 mt-6">
+              <a href="#" className="text-[var(--muted)] hover:text-white transition">
                 <Globe className="w-4 h-4" />
               </a>
-              <a href="#" className="text-[var(--muted)] hover:text-white transition-colors">
+              <a href="#" className="text-[var(--muted)] hover:text-white transition">
                 <MessageCircle className="w-4 h-4" />
               </a>
-              <a href="#" className="text-[var(--muted)] hover:text-white transition-colors">
+              <a href="#" className="text-[var(--muted)] hover:text-white transition">
                 <Share2 className="w-4 h-4" />
               </a>
             </div>
           </div>
 
-          {/* Product Column */}
-          <div className="col-span-1 md:col-span-2">
-            <h3 className="text-white font-semibold mb-3 text-sm">Products</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-[0.4rem]">
-              {products.map((item, idx) => (
-                <a 
-                  key={idx} 
-                  href={item.link} 
-                  className="group flex items-start gap-3 py-2 px-[0.7rem] rounded-lg hover:bg-white/5 border-l-2 border-transparent hover:border-violet-500 transition-all duration-300"
-                >
-                  <span className="text-xl leading-none mt-0.5">{item.icon}</span>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-slate-200 font-medium group-hover:text-white transition-colors text-[0.82rem]">
+          {/* COURSES + SUPPORT */}
+          <div className="col-span-2">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-24 text-sm">
+
+              {/* COURSES */}
+              <div className="footer-links">
+                <h4 className="text-white text-base font-semibold mb-6 tracking-wide">
+                  Courses
+                </h4>
+
+                <ul className="space-y-4 text-slate-400">
+                  {[
+                    { name: "Houdini Animation", link: "/course/houdini-animation" },
+                    { name: "After Effects", link: "/course/blender" },
+                    { name: "Nuke Compositing", link: "/course/nuke" },
+                    { name: "Photoshop", link: "/course/unreal" },
+                  ].map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        to={item.link}
+                        className="group flex items-center gap-2 hover:text-white transition duration-300"
+                      >
+                        <span className="w-0 group-hover:w-4 h-[2px] bg-violet-500 transition-all duration-300"></span>
                         {item.name}
-                      </h4>
-                      {item.badge && (
-                        <span className={`text-[9px] uppercase font-bold px-1.5 py-0.5 rounded-sm ${item.badge === 'NEW' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}`}>
-                          {item.badge}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[0.68rem] text-slate-500 group-hover:text-[var(--muted)] transition-colors mt-0.5">
-                      {item.desc}
-                    </p>
-                  </div>
-                </a>
-              ))}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* SUPPORT */}
+              <div className="footer-links">
+                <h4 className="text-white text-base font-semibold mb-6 tracking-wide">
+                  Support
+                </h4>
+
+                <ul className="space-y-4 text-slate-400">
+                  {[
+                    { name: "Contact Us", link: "/contact" },
+                    { name: "FAQs", link: "/faq" },
+                    { name: "Terms & Conditions", link: "/terms" },
+                    { name: "Privacy Policy", link: "/privacy" },
+                  ].map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        to={item.link}
+                        className="group flex items-center gap-2 hover:text-white transition duration-300"
+                      >
+                        <span className="w-0 group-hover:w-4 h-[2px] bg-violet-500 transition-all duration-300"></span>
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-slate-500 text-[0.75rem] text-center md:text-left">
-            © 2026 Houdini Hollywood. All rights reserved.
+        {/* BOTTOM BAR */}
+        <div className="border-t border-white/10 pt-5 flex flex-col md:flex-row justify-between items-center gap-3">
+          <p className="text-slate-500 text-xs text-center md:text-left">
+            © 2026 Creative India School. All rights reserved.
           </p>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-[0.75rem] text-slate-500">
-            <Link 
-              to="/terms" 
-              className="text-slate-500 hover:text-slate-300 cursor-pointer transition-colors decoration-transparent !no-underline"
-            >
-              Terms & Conditions
+
+          <div className="flex items-center gap-3 text-xs text-slate-500">
+            <Link to="/terms" className="hover:text-slate-300 transition">
+              Terms
             </Link>
-            <span className="hidden md:inline text-white/10">|</span>
-            <Link 
-              to="/privacy" 
-              className="text-slate-500 hover:text-slate-300 cursor-pointer transition-colors decoration-transparent !no-underline"
-            >
-              Privacy Policy
+            <span className="text-white/10">|</span>
+            <Link to="/privacy" className="hover:text-slate-300 transition">
+              Privacy
             </Link>
           </div>
         </div>
+
       </div>
     </footer>
   );

@@ -82,7 +82,7 @@ export default function TermsAndConditions() {
           
           <div className="section-block pb-10 border-b border-white/10 mb-20">
             <p>
-              Welcome to Houdinivfx.com! By accessing and using our website 
+              Welcome to creativeindiaschool.com! By accessing and using our website 
               and services, you agree to the following terms and conditions.
             </p>
           </div>
@@ -122,13 +122,13 @@ export default function TermsAndConditions() {
               <li>
                 Course materials, including recordings, presentations, and 
                 supplementary resources, are the intellectual property of 
-                Houdinivfx.com and are provided for personal, educational use only. 
+                creativeindiaschool.com and are provided for personal, educational use only. 
                 Redistribution, resale, or reproduction of these materials in any 
                 form is not allowed without explicit permission.
               </li>
               <li>
                 Any free content, such as YouTube tutorials, remains the property 
-                of Houdinivfx.com, and no rights are granted to alter or 
+                of creativeindiaschool.com, and no rights are granted to alter or 
                 distribute this content.
               </li>
             </ul>
@@ -170,7 +170,7 @@ export default function TermsAndConditions() {
                 be held liable for any interruptions or delays caused by such issues.
               </li>
               <li>
-                While we make every effort to ensure accuracy, Houdinivfx.com is 
+                While we make every effort to ensure accuracy, creativeindiaschool.com is 
                 not responsible for errors, omissions, or outdated content on our 
                 website or during live sessions.
               </li>
@@ -227,14 +227,14 @@ export default function TermsAndConditions() {
             </h2>
             <ul className="list-disc pl-5 space-y-4 text-left inline-block">
               <li>
-                Houdinivfx.com reserves the right to update or modify these Terms 
+                creativeindiaschool.com reserves the right to update or modify these Terms 
                 and Conditions at any time. Any changes will be posted on this page, 
                 and it is your responsibility to review them regularly.
               </li>
             </ul>
             
             <p className="mt-12">
-              If you have any questions, please contact us at <span className="text-violet-400 font-medium">Houdinivfx@gmail.com</span>
+              If you have any questions, please contact us at <span className="text-violet-400 font-medium">creativeindiaschool@gmail.com</span>
             </p>
           </div>
 

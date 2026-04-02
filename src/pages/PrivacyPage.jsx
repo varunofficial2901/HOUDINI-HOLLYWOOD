@@ -74,7 +74,7 @@ export default function PrivacyPolicy() {
             Privacy Policy
           </h1>
           <p className="privacy-hero-subtitle text-lg text-[var(--muted)]">
-            At Houdinivfx.com, we are committed to protecting your privacy.
+            At creativeindiaschool.com, we are committed to protecting your privacy.
           </p>
         </div>
 
@@ -252,7 +252,7 @@ export default function PrivacyPolicy() {
             <ul className="list-disc pl-5 space-y-4 text-left inline-block">
               <li>
                 If you have any questions or concerns about this Privacy Policy or 
-                how we handle your personal information, please contact us at <span className="text-blue-400 font-medium">Houdinivfx@gmail.com</span>.
+                how we handle your personal information, please contact us at <span className="text-blue-400 font-medium">creativeindiaschool@gmail.com</span>.
               </li>
             </ul>
           </div>

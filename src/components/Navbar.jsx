@@ -50,7 +50,7 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Courses", path: "/courses" },
-    { name: "Pricing", path: "/pricing" },
+    // { name: "Pricing", path: "/pricing" },
     { name: "Community", path: "/community" },
     { name: "Enroll Now", path: "/enroll" }
   ];
@@ -72,7 +72,7 @@ export default function Navbar() {
                 <PlayCircle className="w-8 h-8 text-blue-500" />
               </motion.div>
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-500">
-                Houdini Hollywood
+                Creative India School
               </span>
             </Link>
 
