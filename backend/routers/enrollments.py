@@ -1,0 +1,144 @@
+from fastapi import APIRouter, HTTPException, Depends, Query
+from datetime import datetime
+from bson import ObjectId
+from typing import Optional, List
+from core.database import get_db
+from core.security import get_current_admin
+from models.schemas import (
+    EnrollmentCreate, EnrollmentUpdate, EnrollmentOut, MessageResponse
+)
+
+router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
+
+def fmt(e: dict) -> EnrollmentOut:
+    return EnrollmentOut(
+        id=str(e["_id"]),
+        first_name=e["first_name"],
+        last_name=e["last_name"],
+        email=e["email"],
+        phone=e["phone"],
+        country_code=e.get("country_code", "+91"),
+        gender=e.get("gender"),
+        plan=e["plan"],
+        billing=e["billing"],
+        status=e.get("status", "pending"),
+        admin_notes=e.get("admin_notes"),
+        created_at=e["created_at"],
+        updated_at=e["updated_at"],
+    )
+
+# ── Public: Submit enrollment ──────────────────────────────
+@router.post("", response_model=MessageResponse, status_code=201)
+async def submit_enrollment(data: EnrollmentCreate, db=Depends(get_db)):
+    now = datetime.utcnow()
+    doc = {
+        **data.model_dump(),
+        "status": "pending",
+        "admin_notes": None,
+        "created_at": now,
+        "updated_at": now,
+    }
+    await db.enrollments.insert_one(doc)
+    return MessageResponse(message="Enrollment submitted successfully! We will contact you within 24 hours.")
+
+# ── Admin: List enrollments ────────────────────────────────
+@router.get("", response_model=List[EnrollmentOut])
+async def list_enrollments(
+    status: Optional[str] = Query(None),
+    plan: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(20, ge=1, le=100),
+    db=Depends(get_db),
+    _=Depends(get_current_admin)
+):
+    query = {}
+    if status:
+        query["status"] = status
+    if plan:
+        query["plan"] = plan
+    if search:
+        query["$or"] = [
+            {"email": {"$regex": search, "$options": "i"}},
+            {"first_name": {"$regex": search, "$options": "i"}},
+            {"last_name": {"$regex": search, "$options": "i"}},
+        ]
+
+    cursor = db.enrollments.find(query).sort("created_at", -1).skip(skip).limit(limit)
+    results = await cursor.to_list(length=limit)
+    return [fmt(e) for e in results]
+
+# ── Admin: Get enrollment by ID ───────────────────────────
+@router.get("/{enrollment_id}", response_model=EnrollmentOut)
+async def get_enrollment(
+    enrollment_id: str,
+    db=Depends(get_db),
+    _=Depends(get_current_admin)
+):
+    try:
+        oid = ObjectId(enrollment_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+
+    e = await db.enrollments.find_one({"_id": oid})
+    if not e:
+        raise HTTPException(status_code=404, detail="Enrollment not found")
+    return fmt(e)
+
+# ── Admin: Update enrollment status ───────────────────────
+@router.patch("/{enrollment_id}", response_model=EnrollmentOut)
+async def update_enrollment(
+    enrollment_id: str,
+    data: EnrollmentUpdate,
+    db=Depends(get_db),
+    _=Depends(get_current_admin)
+):
+    try:
+        oid = ObjectId(enrollment_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+
+    update_fields = {k: v for k, v in data.model_dump().items() if v is not None}
+    update_fields["updated_at"] = datetime.utcnow()
+
+    result = await db.enrollments.find_one_and_update(
+        {"_id": oid},
+        {"$set": update_fields},
+        return_document=True
+    )
+    if not result:
+        raise HTTPException(status_code=404, detail="Enrollment not found")
+    return fmt(result)
+
+# ── Admin: Delete enrollment ───────────────────────────────
+@router.delete("/{enrollment_id}", response_model=MessageResponse)
+async def delete_enrollment(
+    enrollment_id: str,
+    db=Depends(get_db),
+    _=Depends(get_current_admin)
+):
+    try:
+        oid = ObjectId(enrollment_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID")
+
+    result = await db.enrollments.delete_one({"_id": oid})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Enrollment not found")
+    return MessageResponse(message="Enrollment deleted")
+
+# ── Admin: Stats ───────────────────────────────────────────
+@router.get("/stats/summary", response_model=dict)
+async def enrollment_stats(db=Depends(get_db), _=Depends(get_current_admin)):
+    total = await db.enrollments.count_documents({})
+    pending = await db.enrollments.count_documents({"status": "pending"})
+    confirmed = await db.enrollments.count_documents({"status": "confirmed"})
+    cancelled = await db.enrollments.count_documents({"status": "cancelled"})
+    completed = await db.enrollments.count_documents({"status": "completed"})
+    return {
+        "total": total,
+        "pending": pending,
+        "confirmed": confirmed,
+        "cancelled": cancelled,
+        "completed": completed,
+    }
