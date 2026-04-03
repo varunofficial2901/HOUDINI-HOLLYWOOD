@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --accent: #8b5cf6;
+    --accent-foreground: #ffffff;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --border: #334155;
+
+    /* ── Font Variables ── */
+    --font-heading: "Bebas Neue", sans-serif;
+    --font-body: "Nunito", sans-serif;
+  }
+
+  /* ── Global Base ── */
+  body {
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased;
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+
+  /* ── Headings → Bebas Neue ── */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    letter-spacing: 0.06em;
+    line-height: 1.0;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    letter-spacing: 0.05em;
+  }
+
+  h3 {
+    font-size: clamp(1.4rem, 3vw, 2.5rem);
+    letter-spacing: 0.04em;
+  }
+
+  h4 {
+    font-size: clamp(1.1rem, 2vw, 1.8rem);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Body Text → Nunito ── */
+  p {
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+  }
+
+  span,
+  li,
+  label,
+  td,
+  th {
+    font-family: var(--font-body);
+    line-height: 1.75;
+  }
+
+  /* ── Inputs → Nunito ── */
+  input,
+  select,
+  textarea {
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+
+  /* ── Buttons → Bebas Neue ── */
+  button {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Links → Nunito ── */
+  a {
+    font-family: var(--font-body);
+  }
+
+  /* ── Nav links → Bebas Neue ── */
+  nav a,
+  .nav-links a,
+  .nav-links li {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Logo → Bebas Neue ── */
+  .logo {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Section Labels / Tags / Badges ── */
+  .section-label,
+  .hero-tag,
+  .course-cat,
+  .course-level,
+  .level-beg,
+  .level-int,
+  .level-adv,
+  .instructor-tag,
+  .plan-badge,
+  .ticker span {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ── Prices / Stats ── */
+  .course-price,
+  .price-amount,
+  .stat-number,
+  .hero-card-body h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Card Titles ── */
+  .course-title,
+  .cat-card h4,
+  .instructor-card h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .font-heading {
+    font-family: var(--font-heading) !important;
+  }
+
+  .font-body {
+    font-family: var(--font-body) !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
