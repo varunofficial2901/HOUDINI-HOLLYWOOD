@@ -47,31 +47,31 @@ export default function Testimonials() {
   return (
     <section
       ref={sectionRef}
-      className="py-32 bg-slate-950 text-center border-b border-white/5 relative overflow-hidden"
+      className="py-16 sm:py-20 md:py-32 bg-slate-950 text-center border-b border-white/5 relative overflow-hidden"
     >
 
       {/* Background glow */}
       <div className="absolute left-[-100px] top-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px]" />
 
-      <div className="max-w-4xl mx-auto px-4 relative z-10">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
 
         {/* TOP LINE */}
-        <p className="text-sm text-amber-400 mb-6 tracking-widest uppercase">
+        <p className="text-xs sm:text-sm text-amber-400 mb-4 sm:mb-6 tracking-widest uppercase">
           Real Results. Real Growth.
         </p>
 
         {/* MAIN HEADLINE */}
-        <h2 className="sect-title-test text-4xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight">
+        <h2 className="sect-title-test text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-extrabold mb-6 sm:mb-8 leading-tight">
           Built to Get You Industry Ready
         </h2>
 
         {/* DESCRIPTION */}
-        <p className="sect-desc-test text-slate-300 text-lg md:text-xl leading-relaxed mb-10">
-          This isn’t just another course — it’s a structured path designed to help you create production-level simulations and build skills that actually matter in real-world projects.
+        <p className="sect-desc-test text-slate-300 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 px-2">
+          This isn't just another course — it's a structured path designed to help you create production-level simulations and build skills that actually matter in real-world projects.
         </p>
 
         {/* TRUST LINE */}
-        <p className="text-sm text-slate-500">
+        <p className="text-xs sm:text-sm text-slate-500">
           Practical training • Real workflows • Designed for serious learners
         </p>
 

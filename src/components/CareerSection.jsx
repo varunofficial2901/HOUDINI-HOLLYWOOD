@@ -46,29 +46,29 @@ export default function CareerSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 bg-slate-950 text-center border-b border-white/5">
+    <section ref={sectionRef} className="py-16 sm:py-20 md:py-32 bg-slate-950 text-center border-b border-white/5">
 
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8">
 
-        <p className="text-sm text-violet-400 mb-6 tracking-widest uppercase">
+        <p className="text-xs sm:text-sm text-violet-400 mb-4 sm:mb-6 tracking-widest uppercase">
           Turn Skills Into Opportunities
         </p>
 
-        <h2 className="career-title text-4xl md:text-6xl lg:text-7xl font-extrabold mb-8">
+        <h2 className="career-title text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-extrabold mb-6 sm:mb-8">
           Start Your Journey in VFX
         </h2>
 
-        <p className="career-desc text-slate-300 text-lg md:text-xl leading-relaxed mb-10">
+        <p className="career-desc text-slate-300 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 px-2">
           Whether you want to freelance, work in studios, or build your own creative projects — these skills give you a real starting point.
         </p>
 
-        <p className="text-sm text-slate-500">
+        <p className="text-xs sm:text-sm text-slate-500">
           Freelancing • Studio roles • Creative independence
         </p>
 
        <Link
   to="/enroll"
-  className="inline-block px-6 m-7 py-3 bg-[var(--accent)] rounded-lg text-white font-semibold hover:scale-105 transition"
+  className="inline-block px-6 m-4 sm:m-7 py-2 sm:py-3 bg-[var(--accent)] rounded-lg text-white text-sm sm:text-base font-semibold hover:scale-105 transition"
 >
   ENROLL NOW →
 </Link>

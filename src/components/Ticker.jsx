@@ -19,11 +19,11 @@ export default function Ticker() {
   }, []);
 
   return (
-    <div ref={tickerRef} className="py-4 bg-violet-600/20 border-y border-white/5 overflow-hidden flex whitespace-nowrap">
+    <div ref={tickerRef} className="py-3 sm:py-4 bg-violet-600/20 border-y border-white/5 overflow-hidden flex whitespace-nowrap">
       {/* Track that is twice as long so it scrolls seamlessly */}
-      <div className="ticker-track flex gap-8 whitespace-nowrap items-center px-4 w-max">
+      <div className="ticker-track flex gap-3 sm:gap-5 md:gap-8 whitespace-nowrap items-center px-3 sm:px-4 w-max">
         {[...Array(2)].map((_, i) => (
-          <div key={i} className="flex gap-8 items-center text-sm font-bold tracking-widest text-violet-300 uppercase">
+          <div key={i} className="flex gap-3 sm:gap-5 md:gap-8 items-center text-xs sm:text-sm font-bold tracking-widest text-violet-300 uppercase">
             <span>Learn from Pros</span>
             <span className="w-2 h-2 bg-white/20 rounded-full"></span>
             <span>Master Houdini</span>

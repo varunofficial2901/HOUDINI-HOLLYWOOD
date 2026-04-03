@@ -142,11 +142,17 @@ export default function IndustryLogos() {
         }
         @media (max-width: 640px) {
           .industry-logo {
-            transform: scale(0.85);
-            margin: 0 1.5rem !important;
+            transform: scale(0.7);
+            margin: 0 0.8rem !important;
           }
           .industry-logo:hover {
-            transform: scale(0.92) !important;
+            transform: scale(0.76) !important;
+          }
+        }
+        @media (min-width: 641px) and (max-width: 1024px) {
+          .industry-logo {
+            transform: scale(0.9);
+            margin: 0 1.5rem !important;
           }
         }
       `}} />
@@ -154,19 +160,19 @@ export default function IndustryLogos() {
       <div className="industry-heading-block w-full" style={{
         background: 'linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%)',
         borderTop: '1px solid #333', borderBottom: '1px solid #333',
-        padding: '1.2rem 0', textAlign: 'center'
+        padding: '0.8rem sm:0.9rem md:1.2rem 0', textAlign: 'center'
       }}>
         <h2 style={{
-          fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)',
+          fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(0.8rem, 2.5vw, 1.6rem)',
           letterSpacing: '0.12em', textTransform: 'uppercase', color: 'white',
-          textShadow: '0 2px 20px rgba(255,255,255,0.1)', margin: 0
+          textShadow: '0 2px 20px rgba(255,255,255,0.1)', margin: 0, padding: '0 1rem'
         }}>
           WHERE HOUDINI DEMAND IN INDUSTRY
         </h2>
       </div>
 
       <div className="industry-logo-strip logo-scroller w-full relative" style={{
-        background: '#0a0a0a', borderBottom: '1px solid #222', padding: '1.8rem 0', overflow: 'hidden',
+        background: '#0a0a0a', borderBottom: '1px solid #222', padding: '1.2rem sm:1.5rem md:1.8rem 0', overflow: 'hidden',
         maskImage: 'linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)'
       }}>

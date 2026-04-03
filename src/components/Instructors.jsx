@@ -58,22 +58,22 @@ export default function Instructors() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-slate-950 relative border-b border-white/5 overflow-hidden">
+    <section ref={sectionRef} className="py-16 sm:py-20 md:py-24 bg-slate-950 relative border-b border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 text-center">
-          <h2 className="sect-title-inst text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500 pb-2">
+        <div className="mb-12 sm:mb-14 md:mb-16 text-center">
+          <h2 className="sect-title-inst text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500 pb-2">
             Meet the Masters
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {instructors.map((instructor) => (
-            <div key={instructor.id} className="instructor-card glass p-6 rounded-2xl border border-white/10 flex items-center gap-6">
-              <div className="w-24 h-24 rounded-full bg-slate-800 border-2 border-slate-700 shrink-0 object-cover" />
-              <div>
-                <h3 className="text-xl font-bold text-white mb-1">{instructor.name}</h3>
-                <p className="text-emerald-400 text-sm font-medium mb-1">{instructor.role}</p>
-                <p className="text-slate-400 text-xs uppercase tracking-wider">{instructor.company}</p>
+            <div key={instructor.id} className="instructor-card glass p-4 sm:p-6 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-800 border-2 border-slate-700 shrink-0 object-cover" />
+              <div className="text-center sm:text-left">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-1">{instructor.name}</h3>
+                <p className="text-sm sm:text-base text-emerald-400 font-medium mb-1">{instructor.role}</p>
+                <p className="text-xs uppercase tracking-wider text-slate-400">{instructor.company}</p>
               </div>
             </div>
           ))}

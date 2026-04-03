@@ -45,7 +45,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <div ref={heroRef} className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center justify-center min-h-[90vh]">
+    <div ref={heroRef} className="relative pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-32 lg:pt-48 lg:pb-32 overflow-hidden flex items-center justify-center min-h-screen">
       {/* Background gradients */}
       {/* 🎬 VIDEO BACKGROUND */}
       <video
@@ -100,25 +100,25 @@ export default function HeroSection() {
           <span className="text-sm font-medium tracking-wide">Master the Art of Motion</span>
         </motion.div>
 
-        <h1 className="hero-title text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-8 leading-tight">
+        <h1 className="hero-title text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-extrabold tracking-tight mb-6 sm:mb-8 leading-tight">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-500">Cinematic FX School</span>
         </h1>
 
-        <p className="hero-subtitle max-w-2xl mx-auto text-lg md:text-xl text-slate-300 mb-10">
+        <p className="hero-subtitle max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-8 sm:mb-10 px-2">
           Learn elite animation techniques from industry pros. Whether you are a beginner or a seasoned designer, take your skills to the next level.
         </p>
 
-        <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
           <Link
             to="/courses"
-            className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 rounded-full font-bold text-lg hover:bg-slate-100 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.3)] inline-block text-center"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-slate-900 rounded-full font-bold text-base sm:text-lg hover:bg-slate-100 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.3)] inline-block text-center"
           >
             Explore Courses
           </Link>
 
           <Link
             to="/enroll"
-            className="w-full sm:w-auto px-8 py-4 rounded-full font-bold text-lg border-2 border-white/20 text-white hover:bg-white/5 hover:border-white/40 transition-colors inline-block text-center"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg border-2 border-white/20 text-white hover:bg-white/5 hover:border-white/40 transition-colors inline-block text-center"
           >
             Enroll Now
           </Link>

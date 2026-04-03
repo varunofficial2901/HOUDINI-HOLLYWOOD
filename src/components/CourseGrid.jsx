@@ -49,31 +49,31 @@ export default function CourseGrid() {
   return (
     <section
       ref={sectionRef}
-      className="py-32 relative overflow-hidden border-b border-white/5 text-center bg-slate-950"
+      className="py-16 sm:py-20 md:py-32 relative overflow-hidden border-b border-white/5 text-center bg-slate-950"
     >
 
       {/* Background Glow */}
       <div className="absolute top-0 right-[-100px] w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[100px]" />
 
-      <div className="max-w-4xl mx-auto px-4 relative z-10">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
 
         {/* TOP LINE */}
-        <p className="text-sm md:text-base text-violet-400 mb-6 tracking-widest uppercase">
+        <p className="text-xs sm:text-sm text-violet-400 mb-4 sm:mb-6 tracking-widest uppercase">
           Built for Future VFX Artists
         </p>
 
         {/* MAIN HEADLINE */}
-        <h2 className="sect-title-course text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-8">
+        <h2 className="sect-title-course text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-extrabold leading-tight mb-6 sm:mb-8">
           No Theory. Only Real Simulations.
         </h2>
 
         {/* DESCRIPTION */}
-        <p className="sect-desc-course text-slate-300 text-lg md:text-xl leading-relaxed mb-10">
+        <p className="sect-desc-course text-slate-300 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 px-2">
           Skip the boring theory — start building real fire, water, and destruction systems used in professional VFX workflows.
         </p>
 
         {/* TRUST LINE */}
-        <p className="text-sm text-slate-500">
+        <p className="text-xs sm:text-sm text-slate-500">
           Beginner friendly • Step-by-step guidance • Real production techniques
         </p>
 

@@ -6,58 +6,89 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function UnrealCourse() {
+export default function PhotoshopCourse() {
   const ref = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".card", { y: 80, opacity: 0 }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.2,
-        scrollTrigger: { trigger: ref.current, start: "top 80%" }
-      });
+
+      gsap.fromTo(".fade-up", 
+        { y: 80, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 80%",
+          }
+        }
+      );
+
     }, ref);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={ref} className="min-h-screen bg-black text-white px-6 md:px-16 py-20">
+    <div
+      ref={ref}
+      className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 relative overflow-hidden"
+    >
 
-      <h1 className="text-5xl md:text-7xl font-bold text-center mt-20 mb-20">
-        PhotoShop
-      </h1>
+      {/* BACKGROUND GRADIENT */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-black to-indigo-900/20 blur-2xl" />
 
-      <div className="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto">
+      {/* CONTENT */}
+      <div className="relative z-10 text-center max-w-3xl">
 
-        <div className="card p-8 bg-white/5 border border-white/10 rounded-2xl">
-          <h2 className="text-2xl font-bold mb-4">Real-time Rendering</h2>
-          <p className="text-slate-400">Cinematic real-time workflows.</p>
+        {/* TAG */}
+        <div className="fade-up inline-block px-4 py-1 mb-6 rounded-full bg-violet-500/20 text-violet-400 text-sm tracking-wide">
+          COMING SOON
         </div>
 
-        <div className="card p-8 bg-white/5 border border-white/10 rounded-2xl">
-          <h2 className="text-2xl font-bold mb-4">Niagara FX</h2>
-          <p className="text-slate-400">Particle systems & effects.</p>
+        {/* TITLE */}
+        <h1 className="fade-up text-5xl md:text-7xl font-bold mb-6">
+          Photoshop Mastery
+        </h1>
+
+        {/* SUBTEXT */}
+        <p className="fade-up text-slate-400 text-lg md:text-xl mb-10 leading-relaxed">
+          We are crafting a high-quality Photoshop course focused on cinematic design, compositing, 
+          and industry-level workflows. Stay tuned for something powerful.
+        </p>
+
+        {/* FEATURES PREVIEW */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+
+          <div className="fade-up p-5 rounded-xl bg-white/5 border border-white/10">
+            Cinematic Compositing
+          </div>
+
+          <div className="fade-up p-5 rounded-xl bg-white/5 border border-white/10">
+            Advanced Color Grading
+          </div>
+
+          <div className="fade-up p-5 rounded-xl bg-white/5 border border-white/10">
+            Industry Workflows
+          </div>
+
         </div>
 
-        <div className="card p-8 bg-white/5 border border-white/10 rounded-2xl">
-          <h2 className="text-2xl font-bold mb-4">Environment Design</h2>
-          <p className="text-slate-400">Build cinematic worlds.</p>
-        </div>
-
-        <div className="card p-8 bg-white/5 border border-white/10 rounded-2xl">
-          <h2 className="text-2xl font-bold mb-4">Sequencer</h2>
-          <p className="text-slate-400">Cinematic camera workflows.</p>
-        </div>
-
-      </div>
-
-      <div className="text-center mt-24">
-        <Link to="/enroll" className="px-10 py-4 bg-violet-600 rounded-xl font-bold">
-          Enroll Now <ChevronRight className="inline ml-2" />
+        {/* CTA */}
+        <Link
+          to="/enroll"
+          className="fade-up inline-flex items-center gap-2 px-10 py-4 bg-violet-600 hover:bg-violet-500 transition-all duration-300 hover:scale-105 rounded-lg font-semibold shadow-lg"
+        >
+          Get Early Access <ChevronRight size={18} />
         </Link>
+
       </div>
+
+      {/* LIGHT GLOW */}
+      <div className="absolute w-[500px] h-[500px] bg-violet-600/20 blur-[150px] rounded-full bottom-[-100px] right-[-100px]" />
 
     </div>
   );

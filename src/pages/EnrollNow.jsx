@@ -6,7 +6,7 @@ const COURSES = [
   { id: "houdini", name: "Houdini Animation", type: "Live Classes", price: "₹44,999" },
   { id: "aftereffects", name: "After Effects", type: "Recorded", price: "₹7,999" },
   { id: "nuke", name: "Nuke Compositing", type: "Recorded", price: "₹15,999" },
-  { id: "PhotoShop", name: "PhotoShop", type: "Recorded", price: "₹6,999" }
+  { id: "PhotoShop", name: "PhotoShop (COMING SOON)", type: "Recorded", price: "₹6,999" }
 ];
 
 export default function EnrollNow() {

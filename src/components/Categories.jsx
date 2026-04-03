@@ -79,35 +79,35 @@ export default function Categories() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-slate-900 border-b border-white/5 relative"
+      className="py-16 sm:py-20 md:py-24 bg-slate-900 border-b border-white/5 relative"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
         {/* TITLE */}
-        <div className="mb-14 text-center">
-          <h2 className="sect-title text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-500 pb-2">
+        <div className="mb-8 sm:mb-10 md:mb-14 text-center">
+          <h2 className="sect-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-500 pb-2">
             Explore Categories
           </h2>
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
 
           {categories.map((cat) => (
 <Link
   key={cat.id}
   to={cat.link}
-  className="group relative category-card h-[220px] rounded-2xl overflow-hidden border border-white/10 hover:border-violet-500/40 transition-all duration-300 bg-white/5 backdrop-blur-lg"
+  className="group relative category-card min-h-[180px] sm:min-h-[200px] md:h-[220px] lg:h-[240px] rounded-2xl overflow-hidden border border-white/10 hover:border-violet-500/40 transition-all duration-300 bg-white/5 backdrop-blur-lg"
 >
 
   {/* DEFAULT CONTENT */}
-  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 transition duration-300 group-hover:opacity-0">
+  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 sm:p-6 md:p-8 transition duration-300 group-hover:opacity-0">
 
-    <div className="mb-4 bg-white/5 p-4 rounded-full group-hover:scale-110 transition">
+    <div className="mb-2 sm:mb-3 md:mb-4 bg-white/5 p-3 sm:p-4 rounded-full group-hover:scale-110 transition">
       {cat.icon}
     </div>
 
-    <h3 className="text-xl font-bold text-slate-100">
+    <h3 className="text-base sm:text-lg md:text-xl font-bold text-slate-100">
       {cat.title}
     </h3>
 

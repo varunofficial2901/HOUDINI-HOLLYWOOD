@@ -1,6 +1,6 @@
 export default function CinematicPanel() {
     return (
-        <div className="relative w-full h-[90vh] overflow-hidden">
+        <div className="relative w-full min-h-[50vh] sm:min-h-[60vh] md:min-h-[75vh] lg:h-[90vh] overflow-hidden">
 
             {/* 🎬 VIDEO */}
             <video
@@ -31,13 +31,13 @@ export default function CinematicPanel() {
             {/* <div className="absolute inset-0 bg-black/30 z-[2]" /> */}
 
             {/* 🎯 CONTENT */}
-            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 py-8 sm:py-12">
 
-                <h2 className="text-4xl md:text-6xl font-[Bebas_Neue] mb-4">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-[Bebas_Neue] mb-3 sm:mb-4">
                     No Theory. Only Real Simulations.
                 </h2>
 
-                <p className="max-w-xl text-gray-300 mb-6 text-sm md:text-lg">
+                <p className="max-w-xl text-gray-300 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base lg:text-lg px-2">
                     Skip the boring theory — start building real fire, water, and destruction systems used in professional VFX workflows.
                 </p>
 

@@ -45,23 +45,23 @@ export default function TransformationSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 bg-slate-950 text-center border-b border-white/5">
+    <section ref={sectionRef} className="py-16 sm:py-20 md:py-32 bg-slate-950 text-center border-b border-white/5">
 
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8">
 
-        <p className="text-sm text-blue-400 mb-6 tracking-widest uppercase">
+        <p className="text-xs sm:text-sm text-blue-400 mb-4 sm:mb-6 tracking-widest uppercase">
           From Beginner to Professional
         </p>
 
-        <h2 className="transform-title text-4xl md:text-6xl lg:text-7xl font-extrabold mb-8">
+        <h2 className="transform-title text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-extrabold mb-6 sm:mb-8">
           Build Skills That Actually Matter
         </h2>
 
-        <p className="transform-desc text-slate-300 text-lg md:text-xl leading-relaxed mb-10">
+        <p className="transform-desc text-slate-300 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 px-2">
           Learn step-by-step how to create cinematic simulations — not just watch tutorials, but actually build work that looks production-ready.
         </p>
 
-        <p className="text-sm text-slate-500">
+        <p className="text-xs sm:text-sm text-slate-500">
           No fluff • Clear structure • Real learning outcomes
         </p>
 

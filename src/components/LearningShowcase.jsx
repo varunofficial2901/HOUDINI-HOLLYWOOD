@@ -48,7 +48,7 @@ export default function CinematicCourseSection() {
     };
 
     return (
-        <div className="relative w-full h-[90vh] overflow-hidden">
+        <div className="relative w-full min-h-[50vh] sm:min-h-[60vh] md:min-h-[75vh] lg:h-[90vh] overflow-hidden">
 
             {/* SLIDES */}
             <div
@@ -97,13 +97,13 @@ export default function CinematicCourseSection() {
                         {/* <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/80" /> */}
 
                         {/* CONTENT */}
-                        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
+                        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4 py-8 sm:py-12">
 
-                            <h2 className="text-4xl md:text-6xl font-[Bebas_Neue] mb-4">
+                            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-[Bebas_Neue] mb-3 sm:mb-4">
                                 {item.title}
                             </h2>
 
-                            <p className="max-w-xl text-sm md:text-lg text-gray-300">
+                            <p className="max-w-xl text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 px-2">
                                 {item.desc}
                             </p>
 
@@ -116,25 +116,27 @@ export default function CinematicCourseSection() {
             {/* LEFT ARROW */}
             <button
                 onClick={prev}
-                className="absolute left-6 top-1/2 -translate-y-1/2 z-20 
-                   w-12 h-12 rounded-full 
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 
+                   w-10 sm:w-12 h-10 sm:h-12 rounded-full 
                    bg-black/40 backdrop-blur 
                    border border-white/20 
-                   flex items-center justify-center"
+                   flex items-center justify-center
+                   hover:bg-black/60 transition"
             >
-                <ChevronLeft />
+                <ChevronLeft size={20} />
             </button>
 
             {/* RIGHT ARROW */}
             <button
                 onClick={next}
-                className="absolute right-6 top-1/2 -translate-y-1/2 z-20 
-                   w-12 h-12 rounded-full 
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 
+                   w-10 sm:w-12 h-10 sm:h-12 rounded-full 
                    bg-black/40 backdrop-blur 
                    border border-white/20 
-                   flex items-center justify-center"
+                   flex items-center justify-center
+                   hover:bg-black/60 transition"
             >
-                <ChevronRight />
+                <ChevronRight size={20} />
             </button>
 
         </div>
