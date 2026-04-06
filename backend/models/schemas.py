@@ -22,6 +22,10 @@ class PlanName(str, Enum):
     starter = "starter"
     pro = "pro"
     master = "master"
+    houdini = "houdini"
+    aftereffects = "aftereffects"
+    nuke = "nuke"
+    photoshop = "PhotoShop"
 
 class CourseLevel(str, Enum):
     beginner = "Beginner"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { dashboardApi, enrollmentsApi } from "../api/client";
 import { StatCard, PageLoader, PageHeader } from "../components/UI";
 import {
-  GraduationCap, Users, BookOpen, MessageSquare,
+  GraduationCap, Users, MessageSquare,
   Clock, CheckCircle, TrendingUp, Mail
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
@@ -38,16 +38,15 @@ export default function Dashboard() {
       <PageHeader title="Dashboard" subtitle="Overview of your platform" />
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard icon={GraduationCap} label="Total Enrollments" value={stats?.total_enrollments ?? 0} color="var(--accent)" />
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <StatCard icon={Clock} label="Pending" value={stats?.pending_enrollments ?? 0} color="var(--warning)"
           sub="Needs action" />
         <StatCard icon={CheckCircle} label="Confirmed" value={stats?.confirmed_enrollments ?? 0} color="var(--success)" />
         <StatCard icon={Users} label="Students" value={stats?.total_students ?? 0} color="var(--accent2)" />
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard icon={BookOpen} label="Active Courses" value={stats?.total_courses ?? 0} color="#a855f7" />
+
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <StatCard icon={MessageSquare} label="Total Messages" value={stats?.total_messages ?? 0} color="#06b6d4" />
         <StatCard icon={Mail} label="Unread Messages" value={stats?.unread_messages ?? 0} color="var(--warning)"
           sub={stats?.unread_messages > 0 ? "Needs reply" : "All caught up"} />
@@ -57,6 +56,7 @@ export default function Dashboard() {
             : "0%"}
           color="var(--success)" />
       </div>
+
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -95,10 +95,10 @@ export default function Dashboard() {
           </h2>
           <div className="space-y-3">
             {[
-              { label: "Pending enrollments need review", value: stats?.pending_enrollments, color: "var(--warning)", link: "/enrollments" },
+             { label: "Pending enrollments need review", value: stats?.pending_enrollments, color: "var(--warning)", link: "/enrollments" },
               { label: "Unread messages awaiting reply", value: stats?.unread_messages, color: "var(--danger)", link: "/messages" },
-              { label: "Active courses on platform", value: stats?.total_courses, color: "var(--success)", link: "/courses" },
               { label: "Registered students total", value: stats?.total_students, color: "var(--accent2)", link: "/students" },
+              
             ].map((item, i) => (
               <a key={i} href={item.link}
                 className="flex items-center justify-between p-3 rounded-lg transition-colors"

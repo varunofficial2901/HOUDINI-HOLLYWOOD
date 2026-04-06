@@ -4,8 +4,6 @@ import AdminLayout from "./components/AdminLayout";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import Enrollments from "./pages/Enrollments";
-import Courses from "./pages/Courses";
-import Pricing from "./pages/Pricing";
 import Messages from "./pages/Messages";
 import Students from "./pages/Students";
 
@@ -32,8 +30,6 @@ export default function App() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="enrollments" element={<Enrollments />} />
-            <Route path="courses" element={<Courses />} />
-            <Route path="pricing" element={<Pricing />} />
             <Route path="messages" element={<Messages />} />
             <Route path="students" element={<Students />} />
           </Route>

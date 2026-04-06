@@ -1,4 +1,3 @@
-import { contactApi } from "../api/client";
 import { useState } from "react";
 import { Mail, MessageSquare } from "lucide-react";
 
@@ -17,23 +16,17 @@ export default function Contact() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      await contactApi.submit({
-        email: form.email,
-        message: form.message,
-      });
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setForm({ email: "", message: "" });
-      }, 3000);
-    } catch (err) {
-      console.error("Failed to send message:", err);
-      alert("Something went wrong. Please try again.");
-    }
+    console.log(form); // later connect backend
+
+    setSubmitted(true);
+
+    setTimeout(() => {
+      setSubmitted(false);
+      setForm({ email: "", message: "" });
+    }, 3000);
   };
 
   return (

@@ -2,17 +2,15 @@ import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
-  LayoutDashboard, Users, BookOpen, DollarSign,
+  LayoutDashboard, Users,
   MessageSquare, GraduationCap, LogOut, Menu, X, PlayCircle, ChevronRight
 } from "lucide-react";
 
 const NAV = [
-  { to: "/dashboard",  icon: LayoutDashboard, label: "Dashboard"   },
-  { to: "/enrollments",icon: GraduationCap,   label: "Enrollments" },
-  { to: "/courses",    icon: BookOpen,         label: "Courses"     },
-  { to: "/pricing",    icon: DollarSign,       label: "Pricing"     },
-  { to: "/messages",   icon: MessageSquare,    label: "Messages"    },
-  { to: "/students",   icon: Users,            label: "Students"    },
+  { to: "/dashboard",   icon: LayoutDashboard, label: "Dashboard"   },
+  { to: "/enrollments", icon: GraduationCap,   label: "Enrollments" },
+  { to: "/messages",    icon: MessageSquare,   label: "Messages"    },
+  { to: "/students",    icon: Users,           label: "Students"    },
 ];
 
 export default function AdminLayout() {
