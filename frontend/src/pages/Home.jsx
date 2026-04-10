@@ -7,14 +7,13 @@ import LearningShowcase from '../components/LearningShowcase';
 import CourseGrid from '../components/CourseGrid';
 import CinematicPanel from '../components/CinematicPanel';
 import IndustryLogos from '../components/IndustryLogos';
-import Instructors from '../components/Instructors';
 import CinematicPanel2 from '../components/CinematicPanel2';
 import Testimonials from '../components/Testimonials';
 import CinematicPanel3 from '../components/CinematicPanel3';
 import TransformationSection from "../components/TransformationSection";
 import CinematicPanel4 from '../components/CinematicPanel4';
 import CareerSection from "../components/CareerSection";
-
+import CourseGrid2 from '../components/CourseGrid2';
 
 export default function Home() {
   return (
@@ -27,7 +26,7 @@ export default function Home() {
       <CourseGrid />
       <CinematicPanel />
       <IndustryLogos />
-      <Instructors />
+      <CourseGrid2 />
       <CinematicPanel2 />
       <Testimonials />
       <CinematicPanel3 />

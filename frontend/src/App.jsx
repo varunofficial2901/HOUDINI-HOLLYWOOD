@@ -30,6 +30,9 @@ import NukeCourse from './pages/NukeCourse';
 import UnrealCourse from './pages/UnrealCourse';
 import Contact from './components/Contact';
 import FAQ from './pages/FAQ';
+import PaymentChoice from "./pages/PaymentChoice";
+import PaymentPanel from "./pages/PaymentPanel";
+
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.config({ nullTargetWarn: false });
@@ -85,6 +88,9 @@ function MainApp() {
           <Route path="/course/unreal"            element={<UnrealCourse />} />
           <Route path="/contact"                  element={<Contact />} />
           <Route path="/faq"                      element={<FAQ />} />
+          <Route path="/payment-choice"           element={<PaymentChoice />} />
+          <Route path="/payment"                  element={<PaymentPanel />} />
+          
         </Routes>
       </main>
       <Footer />
@@ -102,3 +108,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

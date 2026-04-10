@@ -40,7 +40,7 @@ export default function Footer() {
           {/* BRAND */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <PlayCircle className="w-5 h-5 text-blue-500" />
+              <img src="/photos/logonew.jpeg" alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0" />
               <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-500">
                 Creative India School
               </span>

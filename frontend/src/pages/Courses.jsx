@@ -122,9 +122,19 @@ export default function Courses() {
                       : "border-white/10 bg-white/5 hover:bg-white/10")
                   }
                 >
-                  <span className="text-xs px-3 py-1 rounded-full mb-4 inline-block bg-white/10 text-slate-300">
+                  <span className={
+                    course.type === "LIVE CLASSES"
+                    ? "text-sm px-4 py-1.5 rounded-full mb-4 inline-flex items-center gap-2 bg-red-500 text-white font-bold"
+                    : course.type === "RECORDED"
+                    ? "text-xs px-3 py-1 rounded-full mb-4 inline-block bg-indigo-500/20 text-indigo-400 font-bold"
+                    : "text-xs px-3 py-1 rounded-full mb-4 inline-block bg-white/10 text-slate-300"
+                  }>
+                    {course.type === "LIVE CLASSES" && (
+                      <span className="w-2 h-2 rounded-full bg-white animate-ping inline-block" />
+                    )}
                     {course.type}
                   </span>
+
 
                   <h3 className="text-2xl font-bold mb-3">
                     {course.title}
@@ -156,7 +166,7 @@ export default function Courses() {
         {courses.map((course, i) => (
           <section
             key={i}
-            className="cinematic-section h-screen snap-start relative flex items-center justify-center"
+            className="cinematic-section h-screen snap-start relative flex items-center justify-center overflow-hidden"
           >
 
             {/* VIDEO */}
@@ -171,15 +181,24 @@ export default function Courses() {
             </video>
 
             {/* DARK OVERLAY */}
-            {/* <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" /> */}
+            <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
             {/* CONTENT */}
             <div className="content relative z-10 text-center max-w-3xl px-6">
 
-              <span className="text-xs px-4 py-1 rounded-full bg-white/10 text-slate-300 inline-block mb-4">
+              <span className={
+                course.type === "LIVE CLASSES"
+                ? "text-xs px-3 py-1.5 rounded-md mb-4 inline-flex items-center gap-1.5 bg-red-600 text-white font-semibold tracking-wide uppercase"
+                : "text-xs px-3 py-1 rounded-full mb-4 inline-block bg-white/10 text-slate-300"
+              }>
+                {course.type === "LIVE CLASSES" && (
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+                  </span>
+                )}
                 {course.type}
               </span>
-
               <h1 className="text-5xl md:text-6xl font-bold mb-4">
                 {course.title}
               </h1>
@@ -207,7 +226,7 @@ export default function Courses() {
 
       {/* ================= CTA ================= */}
       <div
-        className="w-full border-t border-b border-slate-800 px-5 lg:px-12 py-[5rem]"
+      className="relative z-20 w-full border-t border-b border-slate-800 px-5 lg:px-12 py-[5rem]"
         style={{
           background:
             "linear-gradient(135deg, rgba(255,92,53,0.15) 0%, rgba(255,190,0,0.08) 100%)",

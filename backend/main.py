@@ -11,7 +11,7 @@ async def lifespan(app: FastAPI):
     await connect_db()
     yield
     await close_db()
-
+# ── Create app FIRST ──────────────────────────────────────
 app = FastAPI(
     title="Houdini Hollywood API",
     description="Backend API for Houdini Hollywood — VFX Animation Course Platform",
@@ -29,7 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # ── Routers ────────────────────────────────────────────────
 app.include_router(auth.router)
 app.include_router(enrollments.router)
@@ -50,7 +49,6 @@ async def root():
 @app.get("/health", tags=["Health"])
 async def health():
     return {"status": "healthy"}
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(

@@ -1,4 +1,8 @@
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from core.config import settings
 from fastapi import APIRouter, HTTPException, Depends, status
+from pydantic import BaseModel
 from datetime import datetime
 from bson import ObjectId
 from core.database import get_db
@@ -105,3 +109,57 @@ async def change_password(
         {"$set": {"password_hash": hash_password(data.new_password), "updated_at": datetime.utcnow()}}
     )
     return MessageResponse(message="Password updated successfully")
+class GoogleTokenRequest(BaseModel):
+    token: str
+
+@router.post("/google", response_model=TokenResponse)
+async def google_login(data: GoogleTokenRequest, db=Depends(get_db)):
+    try:
+        # Verify the Google token
+        idinfo = id_token.verify_oauth2_token(
+            data.token,
+            google_requests.Request(),
+            settings.GOOGLE_CLIENT_ID
+        )
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Invalid Google token")
+
+    email = idinfo.get("email")
+    first_name = idinfo.get("given_name", "")
+    last_name = idinfo.get("family_name", "")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Could not get email from Google")
+
+    # Check if user exists
+    user = await db.users.find_one({"email": email})
+
+    if not user:
+        # Auto-register new user
+        now = datetime.utcnow()
+        user_doc = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "password_hash": None,
+            "phone": None,
+            "gender": None,
+            "role": "student",
+            "is_active": True,
+            "auth_provider": "google",
+            "created_at": now,
+            "updated_at": now,
+        }
+        result = await db.users.insert_one(user_doc)
+        user_doc["_id"] = result.inserted_id
+        user = user_doc
+
+    if not user.get("is_active", True):
+        raise HTTPException(status_code=403, detail="Account is disabled")
+
+    token_data = {"sub": user["email"], "role": user.get("role", "student")}
+    return TokenResponse(
+        access_token=create_access_token(token_data),
+        refresh_token=create_refresh_token(token_data),
+        user=format_user(user)
+    )

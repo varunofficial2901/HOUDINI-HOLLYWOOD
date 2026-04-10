@@ -14,10 +14,12 @@ async def dashboard_stats(db=Depends(get_db), _=Depends(get_current_admin)):
     total_enrollments = await db.enrollments.count_documents({})
     pending = await db.enrollments.count_documents({"status": "pending"})
     confirmed = await db.enrollments.count_documents({"status": "confirmed"})
-    total_students = await db.users.count_documents({"role": "student"})
     total_courses = await db.courses.count_documents({"is_active": True})
     total_messages = await db.contact_messages.count_documents({})
     unread = await db.contact_messages.count_documents({"is_read": False})
+    registered = await db.users.count_documents({"role": "student"})
+    enrolled = await db.enrollments.count_documents({"status": "confirmed"})
+    total_students = max(registered, enrolled)
 
     return DashboardStats(
         total_enrollments=total_enrollments,
@@ -39,28 +41,27 @@ async def list_students(
     db=Depends(get_db),
     _=Depends(get_current_admin)
 ):
-    query = {"role": "student"}
+    query = {"status": "confirmed"}
     if search:
         query["$or"] = [
             {"email": {"$regex": search, "$options": "i"}},
             {"first_name": {"$regex": search, "$options": "i"}},
             {"last_name": {"$regex": search, "$options": "i"}},
         ]
-    cursor = db.users.find(query).sort("created_at", -1).skip(skip).limit(limit)
+    cursor = db.enrollments.find(query).sort("created_at", -1).skip(skip).limit(limit)
     results = await cursor.to_list(length=limit)
     return [
         UserOut(
-            id=str(u["_id"]),
-            first_name=u["first_name"],
-            last_name=u["last_name"],
-            email=u["email"],
-            role=u.get("role", "student"),
-            is_active=u.get("is_active", True),
-            created_at=u.get("created_at", datetime.utcnow())
+            id=str(e["_id"]),
+            first_name=e["first_name"],
+            last_name=e["last_name"],
+            email=e["email"],
+            role="student",
+            is_active=e.get("status") != "cancelled",
+            created_at=e.get("created_at", datetime.utcnow())
         )
-        for u in results
+        for e in results
     ]
-
 # ── Toggle Student Active/Inactive ────────────────────────
 @router.patch("/students/{user_id}/toggle", response_model=MessageResponse)
 async def toggle_student(

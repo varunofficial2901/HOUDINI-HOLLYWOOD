@@ -17,6 +17,9 @@ class Settings(BaseSettings):
 
     APP_ENV: str = "development"
     APP_PORT: int = 8000
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    GOOGLE_REDIRECT_URI: str = "http://localhost:8000/api/auth/google/callback"
 
     @property
     def origins_list(self) -> List[str]:

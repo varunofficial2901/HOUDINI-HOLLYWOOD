@@ -1,11 +1,12 @@
 import { contactApi } from "../api/client";
 import { useState } from "react";
-import { Mail, MessageSquare } from "lucide-react";
+import { Mail, MessageSquare, Phone } from "lucide-react";
 
 export default function Contact() {
   const [form, setForm] = useState({
     email: "",
-    message: ""
+    message: "",
+    mobile: ""
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -23,7 +24,7 @@ export default function Contact() {
     try {
       await contactApi.submit({
         email: form.email,
-        message: form.message,
+        message: `${form.message}\n\nMobile: ${form.mobile}`,
       });
       setSubmitted(true);
       setTimeout(() => {
@@ -77,6 +78,32 @@ export default function Contact() {
               />
             </div>
           </div>
+
+         {/* MOBILE */}
+          <div>
+            <label className="text-sm text-slate-300 mb-2 block">
+              Mobile Number
+            </label>
+
+            <div className="flex items-center gap-2 border border-white/10 rounded-xl px-4 py-3 bg-black/40 focus-within:border-violet-500 transition">
+              <Phone className="w-4 h-4 text-slate-400" />
+
+              <input
+                type="tel"
+                name="mobile"
+                value={form.mobile}
+                onChange={handleChange}
+                required
+                pattern="[0-9]{10}"
+                placeholder="Enter 10-digit number"
+                className="bg-transparent outline-none w-full text-white text-sm"
+              />
+            </div>
+            <p className="text-amber-400 text-xs mt-1">
+              ⚠️ Please enter your WhatsApp/OTP-registered mobile number. You will receive a verification OTP on this number.
+            </p>
+          </div>
+
 
           {/* MESSAGE */}
           <div>

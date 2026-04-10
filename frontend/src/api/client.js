@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("hh_access_token");
+  const token = localStorage.getItem("cis_token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -17,8 +17,9 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem("hh_access_token");
-      localStorage.removeItem("hh_user");
+      localStorage.removeItem("cis_token");
+      localStorage.removeItem("cis_refresh_token");
+      localStorage.removeItem("cis_user");
       if (window.location.pathname !== "/") {
         window.location.href = "/";
       }
@@ -69,5 +70,8 @@ export const enrollmentsApi = {
 export const messagesApi = {
   submit: (data) => api.post("/messages", data),
 };
+
+
+
 
 export default api;
