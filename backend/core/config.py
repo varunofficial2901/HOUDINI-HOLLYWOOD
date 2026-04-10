@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    ADMIN_EMAIL: str = "admin@houdinivfx.com"
-    ADMIN_PASSWORD: str = "Admin@123456"
+    ADMIN_EMAIL: str = "gauravsangwan275@gmail.com"
+    ADMIN_PASSWORD: str = "creativeindiaschool@0404"
 
     ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:5174"
 

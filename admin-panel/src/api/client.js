@@ -31,6 +31,9 @@ export const enrollmentsApi = {
   update: (id, data) => api.patch(`/enrollments/${id}`, data),
   delete: (id) => api.delete(`/enrollments/${id}`),
   stats: () => api.get("/enrollments/stats/summary"),
+
+  // ADD THIS ONE NEW LINE
+  approve: (id) => api.post(`/enrollments/${id}/approve`),
 };
 export const coursesApi = {
   listAll: () => api.get("/courses/admin/all"),
@@ -51,5 +54,6 @@ export const studentsApi = {
   list: (params) => api.get("/admin/students", { params }),
   toggle: (id) => api.patch(`/admin/students/${id}/toggle`),
 };
+
 
 export default api;

@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { enrollmentsApi } from "../api/client";
 import { PageHeader, StatusBadge, PageLoader, EmptyState, ConfirmModal, Toast, Select, Btn } from "../components/UI";
@@ -10,11 +11,26 @@ function EnrollRow({ e, onUpdate, onDelete }) {
   const [status, setStatus] = useState(e.status);
   const [notes, setNotes] = useState(e.admin_notes || "");
   const [saving, setSaving] = useState(false);
+  const [approving, setApproving] = useState(false);
+  const [whatsappLink, setWhatsappLink] = useState(null);
 
   const save = async () => {
     setSaving(true);
     try { await onUpdate(e.id, { status, admin_notes: notes }); }
     finally { setSaving(false); }
+  };
+  const handleApprove = async () => {
+    setApproving(true);
+    try {
+      const res = await enrollmentsApi.approve(e.id);
+      setWhatsappLink(res.data.whatsapp_link);
+      setStatus("confirmed");
+      await onUpdate(e.id, { status: "confirmed" });
+    } catch {
+      alert("Approval failed. Try again.");
+    } finally {
+      setApproving(false);
+    }
   };
 
   return (

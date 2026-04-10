@@ -30,36 +30,20 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: (email, password) => api.post("/auth/login", { email, password }),
-  
-  // Google — sends credential (ID token) matching your backend
-  googleLogin: (credential) => api.post("/auth/google", { token: credential }),
-  
-  // Register — matches your UserRegister schema exactly
-  register: (data) => api.post("/auth/register", {
-    first_name: data.firstName,
-    last_name: data.lastName,
-    email: data.email,
-    password: data.password,
-    phone: data.phone || null,
-    gender: data.gender || null,
-  }),
-
+  register: (data) => api.post("/auth/register", data),
   me: () => api.get("/auth/me"),
   refresh: (refresh_token) => api.post("/auth/refresh", { refresh_token }),
 };
+export const googleAuthApi = {
+  login: (token) => api.post("/auth/google", { token }),
+};
 
+// Add this to your frontend client.js (student app, not admin)
 export const enrollApi = {
-  submit: (data) =>
-    api.post("/enrollments", {
-      first_name:   data.firstName,
-      last_name:    data.lastName,
-      email:        data.email,
-      country_code: "+91",
-      phone:        data.phone,
-      gender:       data.gender || null,
-      plan:         data.courseId,
-      billing:      "monthly",
-    }),
+  submit: (data) => api.post("/enrollments/enroll", data),
+  submitPayment: (formData) => api.post("/enrollments/payment-submit", formData, {
+    headers: { "Content-Type": "multipart/form-data" }
+  }),
 };
 
 export const contactApi = {
