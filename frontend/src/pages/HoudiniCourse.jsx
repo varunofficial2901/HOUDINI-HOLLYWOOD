@@ -115,7 +115,7 @@ export default function HoudiniCourse() {
         </p>
 
         <Link
-          to="/enroll"
+          to="/payment-choice"
           className="inline-flex items-center gap-2 px-12 py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-bold text-lg transition-all hover:scale-105"
         >
           Enroll Now <ChevronRight />

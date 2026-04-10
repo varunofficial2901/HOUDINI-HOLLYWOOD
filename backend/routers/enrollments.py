@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Query
+
 from datetime import datetime
 from bson import ObjectId
 from typing import Optional, List
@@ -7,6 +7,56 @@ from core.security import get_current_admin
 from models.schemas import (
     EnrollmentCreate, EnrollmentUpdate, EnrollmentOut, MessageResponse
 )
+from fastapi import Form, UploadFile, File
+from datetime import datetime
+from fastapi import APIRouter, HTTPException, Depends, Query
+router = APIRouter()
+
+@router.post("/payment-submit")
+async def payment_submit(
+    name: str = Form(...),
+    email: str = Form(...),
+    course: str = Form(...),
+    payment_type: str = Form(...),
+    screenshot: UploadFile = File(...)
+):
+    return {
+        "message": "Payment submitted successfully",
+        "name": name,
+        "email": email,
+        "course": course,
+        "filename": file.filename
+    }
+    # Save the screenshot file
+    contents = await screenshot.read()
+    file_path = f"uploads/{screenshot.filename}"
+    with open(file_path, "wb") as f:
+        f.write(contents)
+
+    # Save submission to database with "pending" status
+    await db.enrollments.insert_one({
+        "name": name,
+        "email": email,
+        "course": course,
+        "payment_type": payment_type,
+        "screenshot": file_path,
+        "status": "pending",
+        "created_at": datetime.utcnow()
+    })
+
+    return {"message": "Submitted successfully"}
+
+@router.post("/approve/{enrollment_id}")
+async def approve_enrollment(enrollment_id: str):
+    await db.enrollments.update_one(
+        {"_id": enrollment_id},
+        {"$set": {"status": "approved"}}
+    )
+    # Return WhatsApp link to show in admin panel
+    return {
+        "whatsapp_link": "https://chat.whatsapp.com/IJ6voqFQc4U7y3HwR7kvjl?mode=gi_t",
+        "message": "For online classes join here"
+    }
 
 router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
 

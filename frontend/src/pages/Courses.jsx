@@ -243,7 +243,7 @@ export default function Courses() {
           </p>
 
           <Link
-            to="/enroll"
+            to="/payment-choice"
             className="px-10 py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-md font-bold flex items-center gap-2"
           >
             Enroll Now <ChevronRight className="w-4 h-4" />

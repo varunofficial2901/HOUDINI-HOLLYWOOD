@@ -30,6 +30,20 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: (email, password) => api.post("/auth/login", { email, password }),
+  
+  // Google — sends credential (ID token) matching your backend
+  googleLogin: (credential) => api.post("/auth/google", { token: credential }),
+  
+  // Register — matches your UserRegister schema exactly
+  register: (data) => api.post("/auth/register", {
+    first_name: data.firstName,
+    last_name: data.lastName,
+    email: data.email,
+    password: data.password,
+    phone: data.phone || null,
+    gender: data.gender || null,
+  }),
+
   me: () => api.get("/auth/me"),
   refresh: (refresh_token) => api.post("/auth/refresh", { refresh_token }),
 };
