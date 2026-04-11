@@ -170,12 +170,8 @@ export default function PaymentPanel() {
             <h2 className="text-xl font-bold text-white">Payment Confirmed!</h2>
             <p className="text-slate-400">Welcome to Creative India School 🎉</p>
             {whatsappLink && (
-              
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-3 bg-green-600 hover:bg-green-500 rounded-xl font-bold text-white transition-colors"
-              >
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
+              className="inline-block px-6 py-3 bg-green-600 hover:bg-green-500 rounded-xl font-bold text-white transition-colors">
                 Join WhatsApp Group →
               </a>
             )}
