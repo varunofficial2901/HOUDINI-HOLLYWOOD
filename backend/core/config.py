@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: str = "gauravsangwan275@gmail.com"
     ADMIN_PASSWORD: str = "creativeindiaschool@0404"
 
-    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:5174"
+    ALLOWED_ORIGINS = "https://houdini-hollywood-1nk6.vercel.app,https://admin.creativeindiaschool.com,https://creativeindiaschool.com,https://www.creativeindiaschool.com"
 
     APP_ENV: str = "development"
     APP_PORT: int = 8000
