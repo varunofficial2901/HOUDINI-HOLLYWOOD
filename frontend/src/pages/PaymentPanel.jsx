@@ -42,7 +42,6 @@ export default function PaymentPanel() {
     return () => clearInterval(pollRef.current);
   }, [enrollmentId]);
 
-  // ── FIXED: uses enrollApi.submitPayment instead of raw fetch ──
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.file) {
@@ -53,11 +52,11 @@ export default function PaymentPanel() {
     setSubmitError(null);
     try {
       const fd = new FormData();
-      fd.append("name",         form.name);
-      fd.append("email",        form.email);
-      fd.append("course",       form.course);
+      fd.append("name", form.name);
+      fd.append("email", form.email);
+      fd.append("course", form.course);
       fd.append("payment_type", type);
-      fd.append("screenshot",   form.file);
+      fd.append("screenshot", form.file);
 
       const res = await enrollApi.submitPayment(fd);
       setEnrollmentId(res.data.enrollment_id);
@@ -98,24 +97,24 @@ export default function PaymentPanel() {
                 type="text"
                 placeholder="Full Name"
                 required
-                className="w-full p-3 rounded bg-black/50 border border-white/10 text-white"
+                className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
               <input
                 type="email"
                 placeholder="Email"
                 required
-                className="w-full p-3 rounded bg-black/50 border border-white/10 text-white"
+                className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
               <select
-                className="w-full p-3 rounded bg-black/50 border border-white/10 text-white"
+                className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-violet-500 transition-colors"
                 onChange={(e) => setForm({ ...form, course: e.target.value })}
               >
-                <option>Houdini Animation</option>
-                <option>After Effects</option>
-                <option>Nuke Compositing</option>
-                <option>Photoshop</option>
+                <option value="Houdini Animation">Houdini Animation</option>
+                <option value="After Effects">After Effects</option>
+                <option value="Nuke Compositing">Nuke Compositing</option>
+                <option value="Photoshop">Photoshop</option>
               </select>
 
               <div className="text-center text-xl font-bold text-violet-400">
@@ -128,7 +127,7 @@ export default function PaymentPanel() {
                   type="file"
                   accept="image/*"
                   required
-                  className="w-full text-sm text-slate-400"
+                  className="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-violet-600 file:text-white file:cursor-pointer hover:file:bg-violet-500"
                   onChange={(e) => setForm({ ...form, file: e.target.files[0] })}
                 />
               </div>
@@ -143,7 +142,7 @@ export default function PaymentPanel() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-violet-600 hover:bg-violet-500 rounded-lg font-bold transition disabled:opacity-60"
+                className="w-full py-3 bg-violet-600 hover:bg-violet-500 rounded-xl font-bold transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-white"
               >
                 {loading ? "Submitting..." : "Submit Payment"}
               </button>
@@ -171,11 +170,11 @@ export default function PaymentPanel() {
             <h2 className="text-xl font-bold text-white">Payment Confirmed!</h2>
             <p className="text-slate-400">Welcome to Creative India School 🎉</p>
             {whatsappLink && (
-              <a
+              
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-6 py-3 bg-green-600 hover:bg-green-500 rounded-xl font-bold text-white transition"
+                className="inline-block px-6 py-3 bg-green-600 hover:bg-green-500 rounded-xl font-bold text-white transition-colors"
               >
                 Join WhatsApp Group →
               </a>
@@ -190,7 +189,6 @@ export default function PaymentPanel() {
     </div>
   );
 }
-
 
 
 
