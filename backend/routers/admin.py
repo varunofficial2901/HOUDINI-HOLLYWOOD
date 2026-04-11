@@ -31,6 +31,22 @@ async def dashboard_stats(db=Depends(get_db), _=Depends(get_current_admin)):
         unread_messages=unread,
         revenue_this_month=0,  # placeholder — wire real payment later
     )
+# ── Summary (alias for dashboard) ─────────────────────────
+@router.get("/summary")
+async def summary_stats(db=Depends(get_db), _=Depends(get_current_admin)):
+    total_enrollments = await db.enrollments.count_documents({})
+    pending = await db.enrollments.count_documents({"status": "pending"})
+    confirmed = await db.enrollments.count_documents({"status": "confirmed"})
+    total_messages = await db.contact_messages.count_documents({})
+    unread = await db.contact_messages.count_documents({"is_read": False})
+
+    return {
+        "total_enrollments": total_enrollments,
+        "pending_enrollments": pending,
+        "confirmed_enrollments": confirmed,
+        "total_messages": total_messages,
+        "unread_messages": unread,
+    }
 
 # ── List Students ──────────────────────────────────────────
 @router.get("/students", response_model=List[UserOut])
@@ -84,3 +100,8 @@ async def toggle_student(
     await db.users.update_one({"_id": oid}, {"$set": {"is_active": new_status}})
     state = "activated" if new_status else "deactivated"
     return MessageResponse(message=f"Student {state} successfully")
+
+
+
+
+
