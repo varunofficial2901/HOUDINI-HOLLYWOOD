@@ -27,7 +27,7 @@ export default function PaymentPanel() {
     pollRef.current = setInterval(async () => {
       try {
         const res = await fetch(
-          ${import.meta.env.VITE_API_URL}/api/enrollments/payment-status/${enrollmentId}`
+          `${import.meta.env.VITE_API_URL}/api/enrollments/payment-status/${enrollmentId}`
         );
         const data = await res.json();
         if (data.status === "confirmed") {
@@ -60,7 +60,7 @@ export default function PaymentPanel() {
       data.append("screenshot", form.file);
 
       const res = await fetch(
-        ${import.meta.env.VITE_API_URL}/api/enrollments/payment-submit
+        `${import.meta.env.VITE_API_URL}/api/enrollments/payment-submit`
         { method: "POST", body: data }
       );
       const result = await res.json();
