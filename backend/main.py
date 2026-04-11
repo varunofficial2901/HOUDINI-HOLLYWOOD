@@ -24,7 +24,16 @@ app = FastAPI(
 # ── CORS ───────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.origins_list,
+    allow_origins=[
+        "https://houdini-hollywood.vercel.app",
+        "https://houdini-hollywood-1nk6.vercel.app",
+        "https://www.creativeindiaschool.com",
+        "https://creativeindiaschool.com",
+        "https://admin.creativeindiaschool.com",
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
