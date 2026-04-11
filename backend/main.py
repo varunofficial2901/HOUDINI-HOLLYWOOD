@@ -5,6 +5,10 @@ from contextlib import asynccontextmanager
 from core.config import settings
 from core.database import connect_db, close_db
 from routers import auth, enrollments, courses, pricing, messages, admin
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -38,6 +42,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(request: Request, rest_of_path: str):
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": request.headers.get("origin", "*"),
+            "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Credentials": "true",
+        }
+    )
 # ── Routers ────────────────────────────────────────────────
 app.include_router(auth.router)
 app.include_router(enrollments.router)
