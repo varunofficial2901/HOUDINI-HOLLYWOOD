@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 pwd = CryptContext(schemes=["bcrypt"])
 
 async def update():
-    client = AsyncIOMotorClient("mongodb://localhost:27017")
+    client = AsyncIOMotorClient('mongodb+srv://varun:46btP71KZZYebABT@cluster0.fvlhe7g.mongodb.net/houdini_hollywood')
     db = client["houdini_hollywood"]
     
     new_email = "gauravsangwan275@gmail.com"
