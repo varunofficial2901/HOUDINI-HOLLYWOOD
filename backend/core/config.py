@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
     GOOGLE_REDIRECT_URI: str = "http://localhost:8000/api/auth/google/callback"
+    CLOUDINARY_CLOUD_NAME: str = "dclhn3f4"
+    CLOUDINARY_API_KEY: str = "845281432237132"
+    CLOUDINARY_API_SECRET: str = "iE0Y1PRHSMrzANtmSct0UlxMiS8"
 
     @property
     def origins_list(self) -> List[str]:

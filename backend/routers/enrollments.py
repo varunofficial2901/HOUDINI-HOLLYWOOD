@@ -2,8 +2,11 @@ import os
 from datetime import datetime
 from bson import ObjectId
 from typing import Optional, List
+import cloudinary
+import cloudinary.uploader
 from core.database import get_db
 from core.security import get_current_admin
+from core.config import settings
 from models.schemas import (
     EnrollmentCreate, EnrollmentUpdate, EnrollmentOut, MessageResponse
 )
@@ -11,20 +14,26 @@ from fastapi import APIRouter, HTTPException, Depends, Query, Form, UploadFile, 
 
 router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
 
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=settings.CLOUDINARY_CLOUD_NAME,
+    api_key=settings.CLOUDINARY_API_KEY,
+    api_secret=settings.CLOUDINARY_API_SECRET
+)
+
 def fmt(e: dict) -> EnrollmentOut:
     return EnrollmentOut(
         id=str(e["_id"]),
         first_name=e["first_name"],
         last_name=e["last_name"],
         email=e["email"],
-        phone=e["phone"],
+        phone=e.get("phone", ""),
         country_code=e.get("country_code", "+91"),
         gender=e.get("gender"),
         plan=e["plan"],
         billing=e["billing"],
         status=e.get("status", "pending"),
         admin_notes=e.get("admin_notes"),
-        # ✅ FIX: include screenshot path so admin panel can display it
         screenshot=e.get("screenshot"),
         created_at=e["created_at"],
         updated_at=e["updated_at"],
@@ -35,33 +44,32 @@ def fmt(e: dict) -> EnrollmentOut:
 async def payment_submit(
     name: str = Form(...),
     email: str = Form(...),
+    phone: str = Form(""),
     course: str = Form(...),
     payment_type: str = Form(...),
     screenshot: UploadFile = File(...),
     db=Depends(get_db)
 ):
-    os.makedirs("uploads", exist_ok=True)
-
-    # ✅ Use a safe unique filename to avoid collisions/overwriting
-    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
-    ext = os.path.splitext(screenshot.filename)[1]
-    safe_filename = f"{timestamp}_{screenshot.filename.replace(' ', '_')}"
-    file_path = f"uploads/{safe_filename}"
-
-    with open(file_path, "wb") as f:
-        f.write(await screenshot.read())
+    # Upload to Cloudinary
+    contents = await screenshot.read()
+    upload_result = cloudinary.uploader.upload(
+        contents,
+        folder="payment_screenshots",
+        resource_type="image"
+    )
+    file_url = upload_result["secure_url"]
 
     now = datetime.utcnow()
     result = await db.enrollments.insert_one({
         "first_name": name,
         "last_name": "",
         "email": email,
-        "phone": "",
+        "phone": phone,
         "country_code": "+91",
         "gender": None,
         "plan": course,
         "billing": payment_type,
-        "screenshot": file_path,   # stored as "uploads/filename.jpg"
+        "screenshot": file_url,
         "status": "pending",
         "admin_notes": None,
         "created_at": now,
@@ -73,7 +81,7 @@ async def payment_submit(
         "enrollment_id": str(result.inserted_id)
     }
 
-# ── Admin: Approve enrollment + return WhatsApp link ──────
+# ── Admin: Approve enrollment ──────────────────────────────
 @router.post("/{enrollment_id}/approve")
 async def approve_enrollment(
     enrollment_id: str,
@@ -250,11 +258,6 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 
 
 
-
-
-
-
-
 # import os
 # from datetime import datetime
 # from bson import ObjectId
@@ -265,6 +268,7 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #     EnrollmentCreate, EnrollmentUpdate, EnrollmentOut, MessageResponse
 # )
 # from fastapi import APIRouter, HTTPException, Depends, Query, Form, UploadFile, File
+
 # router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
 
 # def fmt(e: dict) -> EnrollmentOut:
@@ -280,6 +284,8 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         billing=e["billing"],
 #         status=e.get("status", "pending"),
 #         admin_notes=e.get("admin_notes"),
+#         # ✅ FIX: include screenshot path so admin panel can display it
+#         screenshot=e.get("screenshot"),
 #         created_at=e["created_at"],
 #         updated_at=e["updated_at"],
 #     )
@@ -295,7 +301,13 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #     db=Depends(get_db)
 # ):
 #     os.makedirs("uploads", exist_ok=True)
-#     file_path = f"uploads/{screenshot.filename}"
+
+#     # ✅ Use a safe unique filename to avoid collisions/overwriting
+#     timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
+#     ext = os.path.splitext(screenshot.filename)[1]
+#     safe_filename = f"{timestamp}_{screenshot.filename.replace(' ', '_')}"
+#     file_path = f"uploads/{safe_filename}"
+
 #     with open(file_path, "wb") as f:
 #         f.write(await screenshot.read())
 
@@ -309,14 +321,13 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         "gender": None,
 #         "plan": course,
 #         "billing": payment_type,
-#         "screenshot": file_path,
+#         "screenshot": file_path,   # stored as "uploads/filename.jpg"
 #         "status": "pending",
 #         "admin_notes": None,
 #         "created_at": now,
 #         "updated_at": now,
 #     })
 
-#     # Return the ID so frontend can poll for status
 #     return {
 #         "message": "Payment submitted successfully",
 #         "enrollment_id": str(result.inserted_id)
@@ -461,6 +472,7 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         "cancelled": cancelled,
 #         "completed": completed,
 #     }
+
 # # ── Public: Check payment status ──────────────────────────
 # @router.get("/payment-status/{enrollment_id}")
 # async def payment_status(enrollment_id: str, db=Depends(get_db)):
@@ -478,20 +490,5 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         "whatsapp_link": "https://chat.whatsapp.com/IJ6voqFQc4U7y3HwR7kvjl?mode=gi_t" if e.get("status") == "confirmed" else None,
 #         "message": "Online classes ke liye yahan join karein" if e.get("status") == "confirmed" else None
 #     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

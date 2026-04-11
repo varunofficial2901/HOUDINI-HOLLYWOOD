@@ -23,7 +23,7 @@ const categories = [
   {
     id: 3,
     title: 'After Effects',
-    icon: "/public/photos/animate1.png",
+    icon: "/photos/animate1.png",
     link: "/course/blender",
     video: "/videos/particle.mp4"
   },
