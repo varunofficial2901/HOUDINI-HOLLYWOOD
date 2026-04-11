@@ -8,6 +8,7 @@ from models.schemas import (
     EnrollmentCreate, EnrollmentUpdate, EnrollmentOut, MessageResponse
 )
 from fastapi import APIRouter, HTTPException, Depends, Query, Form, UploadFile, File
+
 router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
 
 def fmt(e: dict) -> EnrollmentOut:
@@ -23,6 +24,8 @@ def fmt(e: dict) -> EnrollmentOut:
         billing=e["billing"],
         status=e.get("status", "pending"),
         admin_notes=e.get("admin_notes"),
+        # ✅ FIX: include screenshot path so admin panel can display it
+        screenshot=e.get("screenshot"),
         created_at=e["created_at"],
         updated_at=e["updated_at"],
     )
@@ -38,7 +41,13 @@ async def payment_submit(
     db=Depends(get_db)
 ):
     os.makedirs("uploads", exist_ok=True)
-    file_path = f"uploads/{screenshot.filename}"
+
+    # ✅ Use a safe unique filename to avoid collisions/overwriting
+    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
+    ext = os.path.splitext(screenshot.filename)[1]
+    safe_filename = f"{timestamp}_{screenshot.filename.replace(' ', '_')}"
+    file_path = f"uploads/{safe_filename}"
+
     with open(file_path, "wb") as f:
         f.write(await screenshot.read())
 
@@ -52,14 +61,13 @@ async def payment_submit(
         "gender": None,
         "plan": course,
         "billing": payment_type,
-        "screenshot": file_path,
+        "screenshot": file_path,   # stored as "uploads/filename.jpg"
         "status": "pending",
         "admin_notes": None,
         "created_at": now,
         "updated_at": now,
     })
 
-    # Return the ID so frontend can poll for status
     return {
         "message": "Payment submitted successfully",
         "enrollment_id": str(result.inserted_id)
@@ -204,6 +212,7 @@ async def enrollment_stats(db=Depends(get_db), _=Depends(get_current_admin)):
         "cancelled": cancelled,
         "completed": completed,
     }
+
 # ── Public: Check payment status ──────────────────────────
 @router.get("/payment-status/{enrollment_id}")
 async def payment_status(enrollment_id: str, db=Depends(get_db)):
@@ -238,6 +247,14 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 
 
 
+
+
+
+
+
+
+
+
 # import os
 # from datetime import datetime
 # from bson import ObjectId
@@ -247,72 +264,7 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 # from models.schemas import (
 #     EnrollmentCreate, EnrollmentUpdate, EnrollmentOut, MessageResponse
 # )
-# from fastapi import Form, UploadFile, File
-# from datetime import datetime
-# from fastapi import APIRouter, HTTPException, Depends, Query
-# router = APIRouter()
-
-# @router.post("/payment-submit")
-# async def payment_submit(
-#     name: str = Form(...),
-#     email: str = Form(...),
-#     course: str = Form(...),
-#     payment_type: str = Form(...),
-#     screenshot: UploadFile = File(...)
-# ):
-#     os.makedirs("uploads", exist_ok=True)
-#     file_path = f"uploads/{screenshot.filename}"
-#     with open(file_path, "wb") as f:
-#         f.write(await screenshot.read())
-
-#     # Save to your DB as pending enrollment
-#     await db.enrollments.insert_one({
-#         "name": name,
-#         "email": email,
-#         "course": course,
-#         "payment_type": payment_type,
-#         "screenshot": file_path,
-#         "status": "pending",
-#         "created_at": datetime.utcnow()
-#     })
-#     return {
-#         "message": "Payment submitted successfully",
-#         "name": name,
-#         "email": email,
-#         "course": course,
-#         "filename": file.filename
-#     }
-#     # # Save the screenshot file
-#     # contents = await screenshot.read()
-#     # file_path = f"uploads/{screenshot.filename}"
-#     # with open(file_path, "wb") as f:
-#     #     f.write(contents)
-
-#     # # Save submission to database with "pending" status
-#     # await db.enrollments.insert_one({
-#     #     "name": name,
-#     #     "email": email,
-#     #     "course": course,
-#     #     "payment_type": payment_type,
-#     #     "screenshot": file_path,
-#     #     "status": "pending",
-#     #     "created_at": datetime.utcnow()
-#     # })
-
-#     # return {"message": "Submitted successfully"}
-
-# @router.post("/approve/{enrollment_id}")
-# async def approve_enrollment(enrollment_id: str):
-#     await db.enrollments.update_one(
-#         {"_id": enrollment_id},
-#         {"$set": {"status": "approved"}}
-#     )
-#     # Return WhatsApp link to show in admin panel
-#     return {
-#         "whatsapp_link": "https://chat.whatsapp.com/IJ6voqFQc4U7y3HwR7kvjl?mode=gi_t",
-#         "message": "For online classes join here"
-#     }
-
+# from fastapi import APIRouter, HTTPException, Depends, Query, Form, UploadFile, File
 # router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
 
 # def fmt(e: dict) -> EnrollmentOut:
@@ -332,7 +284,69 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         updated_at=e["updated_at"],
 #     )
 
-# # ── Public: Submit enrollment ──────────────────────────────
+# # ── Public: Payment screenshot submit ─────────────────────
+# @router.post("/payment-submit")
+# async def payment_submit(
+#     name: str = Form(...),
+#     email: str = Form(...),
+#     course: str = Form(...),
+#     payment_type: str = Form(...),
+#     screenshot: UploadFile = File(...),
+#     db=Depends(get_db)
+# ):
+#     os.makedirs("uploads", exist_ok=True)
+#     file_path = f"uploads/{screenshot.filename}"
+#     with open(file_path, "wb") as f:
+#         f.write(await screenshot.read())
+
+#     now = datetime.utcnow()
+#     result = await db.enrollments.insert_one({
+#         "first_name": name,
+#         "last_name": "",
+#         "email": email,
+#         "phone": "",
+#         "country_code": "+91",
+#         "gender": None,
+#         "plan": course,
+#         "billing": payment_type,
+#         "screenshot": file_path,
+#         "status": "pending",
+#         "admin_notes": None,
+#         "created_at": now,
+#         "updated_at": now,
+#     })
+
+#     # Return the ID so frontend can poll for status
+#     return {
+#         "message": "Payment submitted successfully",
+#         "enrollment_id": str(result.inserted_id)
+#     }
+
+# # ── Admin: Approve enrollment + return WhatsApp link ──────
+# @router.post("/{enrollment_id}/approve")
+# async def approve_enrollment(
+#     enrollment_id: str,
+#     db=Depends(get_db),
+#     _=Depends(get_current_admin)
+# ):
+#     try:
+#         oid = ObjectId(enrollment_id)
+#     except Exception:
+#         raise HTTPException(status_code=400, detail="Invalid ID")
+
+#     result = await db.enrollments.find_one_and_update(
+#         {"_id": oid},
+#         {"$set": {"status": "confirmed", "updated_at": datetime.utcnow()}}
+#     )
+#     if not result:
+#         raise HTTPException(status_code=404, detail="Enrollment not found")
+
+#     return {
+#         "whatsapp_link": "https://chat.whatsapp.com/IJ6voqFQc4U7y3HwR7kvjl?mode=gi_t",
+#         "message": "Online classes ke liye yahan join karein"
+#     }
+
+# # ── Public: Submit enrollment form ────────────────────────
 # @router.post("", response_model=MessageResponse, status_code=201)
 # async def submit_enrollment(data: EnrollmentCreate, db=Depends(get_db)):
 #     now = datetime.utcnow()
@@ -390,7 +404,7 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         raise HTTPException(status_code=404, detail="Enrollment not found")
 #     return fmt(e)
 
-# # ── Admin: Update enrollment status ───────────────────────
+# # ── Admin: Update enrollment ───────────────────────────────
 # @router.patch("/{enrollment_id}", response_model=EnrollmentOut)
 # async def update_enrollment(
 #     enrollment_id: str,
@@ -447,3 +461,37 @@ async def payment_status(enrollment_id: str, db=Depends(get_db)):
 #         "cancelled": cancelled,
 #         "completed": completed,
 #     }
+# # ── Public: Check payment status ──────────────────────────
+# @router.get("/payment-status/{enrollment_id}")
+# async def payment_status(enrollment_id: str, db=Depends(get_db)):
+#     try:
+#         oid = ObjectId(enrollment_id)
+#     except Exception:
+#         raise HTTPException(status_code=400, detail="Invalid ID")
+
+#     e = await db.enrollments.find_one({"_id": oid})
+#     if not e:
+#         raise HTTPException(status_code=404, detail="Not found")
+
+#     return {
+#         "status": e.get("status", "pending"),
+#         "whatsapp_link": "https://chat.whatsapp.com/IJ6voqFQc4U7y3HwR7kvjl?mode=gi_t" if e.get("status") == "confirmed" else None,
+#         "message": "Online classes ke liye yahan join karein" if e.get("status") == "confirmed" else None
+#     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
