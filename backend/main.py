@@ -23,8 +23,17 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    # Use the dynamic list from your config.py instead of "*"
+    allow_origins=[
+        "https://www.creativeindiaschool.com",
+        "https://creativeindiaschool.com",
+        "https://admin.creativeindiaschool.com",
+        "https://api.creativeindiaschool.com",
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -100,13 +109,13 @@ if __name__ == "__main__":
 # app.add_middleware(
 #     CORSMiddleware,
 #     allow_origins=[
-#         "https://www.creativeindiaschool.com",
-#         "https://creativeindiaschool.com",
-#         "https://admin.creativeindiaschool.com",
-#         "https://api.creativeindiaschool.com",
-#         "http://localhost:5173",
-#         "http://localhost:5174",
-#         "http://localhost:3000",
+      "https://www.creativeindiaschool.com",
+         "https://creativeindiaschool.com",
+         "https://admin.creativeindiaschool.com",
+         "https://api.creativeindiaschool.com",
+         "http://localhost:5173",
+         "http://localhost:5174",
+         "http://localhost:3000",
 #     ],
 #     allow_credentials=True,
 #     allow_methods=["*"],
