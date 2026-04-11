@@ -94,6 +94,7 @@ class EnrollmentOut(BaseModel):
     billing: str
     status: str
     admin_notes: Optional[str]
+    screenshot: Optional[str] = None  # ← YEH ADD KAR
     created_at: datetime
     updated_at: datetime
 
