@@ -1,15 +1,15 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import { CheckCircle, Loader2, Lock, UploadCloud, X, FileImage, ChevronRight, ArrowLeft } from "lucide-react";
 import { gsap } from 'gsap';
+import { enrollApi } from '../api/client';
 
 const COURSES = [
-  { id: "houdini", name: "Houdini Animation", type: "Live Classes", price: "₹44,999" },
-  { id: "aftereffects", name: "After Effects", type: "Recorded", price: "₹7,999" },
-  { id: "nuke", name: "Nuke Compositing", type: "Recorded", price: "₹15,999" },
-  { id: "PhotoShop", name: "PhotoShop (COMING SOON)", type: "Recorded", price: "₹6,999" }
+  { id: "houdini",      name: "Houdini Animation",        type: "Live Classes", price: "₹44,999" },
+  { id: "aftereffects", name: "After Effects",             type: "Recorded",     price: "₹7,999"  },
+  { id: "nuke",         name: "Nuke Compositing",          type: "Recorded",     price: "₹15,999" },
+  { id: "PhotoShop",    name: "PhotoShop (COMING SOON)",   type: "Recorded",     price: "₹6,999"  },
 ];
 
-// ── Step Bar (only for Houdini flow) ──────────────────────
 function StepBar({ step }) {
   const steps = ["Details", "Payment", "Upload"];
   return (
@@ -46,15 +46,13 @@ export default function EnrollNow() {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [errors, setErrors] = useState({});
 
-  // Houdini-specific state
-  const [houdiniStep, setHoudiniStep] = useState(1); // 1=details, 2=payment, 3=upload
+  const [houdiniStep, setHoudiniStep] = useState(1);
   const [paymentType, setPaymentType] = useState("");
   const [screenshot, setScreenshot] = useState(null);
   const [screenshotPreview, setScreenshotPreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  // General state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -90,7 +88,6 @@ export default function EnrollNow() {
     setScreenshotPreview(null);
   };
 
-  // For non-Houdini courses — original simple submit
   const handleSimpleSubmit = () => {
     if (!validateDetails()) return;
     setIsSubmitting(true);
@@ -100,33 +97,31 @@ export default function EnrollNow() {
     }, 1500);
   };
 
-  // Houdini Step 1 → 2
   const handleHoudiniNext1 = () => {
     if (!validateDetails()) return;
     setHoudiniStep(2);
   };
 
-  // Houdini Step 3 — final submit
+  // ── FIXED: uses enrollApi.submitPayment from client.js ──
   const handleHoudiniSubmit = async () => {
     if (!screenshot) return;
     setSubmitting(true);
     setSubmitError(null);
     try {
       const fd = new FormData();
-      fd.append("name", `${formData.firstName} ${formData.lastName}`);
-      fd.append("email", formData.email);
-      fd.append("course", "houdini");
+      fd.append("name",         `${formData.firstName} ${formData.lastName}`);
+      fd.append("email",        formData.email);
+      fd.append("course",       "houdini");
       fd.append("payment_type", paymentType);
-      fd.append("screenshot", screenshot);
+      fd.append("screenshot",   screenshot);
 
-      const res = await fetch("/api/enrollments/payment-submit", {
-        method: "POST",
-        body: fd,
-      });
-      if (!res.ok) throw new Error("Failed");
+      await enrollApi.submitPayment(fd);
       setIsSuccess(true);
-    } catch {
-      setSubmitError("Submission failed. Please check your connection and try again.");
+    } catch (err) {
+      setSubmitError(
+        err.response?.data?.detail ||
+        "Submission failed. Please check your connection and try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -188,16 +183,13 @@ export default function EnrollNow() {
 
         <div className="enroll-card bg-white/5 border border-white/10 rounded-2xl p-8 space-y-6">
 
-          {/* ── Houdini Multi-Step Flow ── */}
           {isHoudini && houdiniStep > 1 ? (
             <>
               <StepBar step={houdiniStep} />
 
-              {/* Step 2: Payment */}
               {houdiniStep === 2 && (
                 <div className="space-y-6">
                   <p className="text-slate-400 text-sm text-center">Choose your payment plan</p>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div onClick={() => setPaymentType("full")}
                       className={`cursor-pointer p-5 rounded-xl border transition-all ${paymentType === "full"
@@ -258,7 +250,6 @@ export default function EnrollNow() {
                 </div>
               )}
 
-              {/* Step 3: Upload Receipt */}
               {houdiniStep === 3 && (
                 <div className="space-y-5">
                   <p className="text-slate-400 text-sm text-center">Upload your payment screenshot as proof</p>
@@ -317,9 +308,6 @@ export default function EnrollNow() {
             </>
           ) : (
             <>
-              {/* ── Original Form (all courses) ── */}
-
-              {/* NAME */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <input placeholder="First Name *" className={`input ${errors.firstName ? "border-red-500" : ""}`}
@@ -333,21 +321,18 @@ export default function EnrollNow() {
                 </div>
               </div>
 
-              {/* EMAIL */}
               <div>
                 <input placeholder="Email *" className={`input ${errors.email ? "border-red-500" : ""}`}
                   onChange={(e) => handleChange("email", e.target.value)} />
                 {errors.email && <p className="error">{errors.email}</p>}
               </div>
 
-              {/* PHONE */}
               <div>
                 <input placeholder="Phone *" className={`input ${errors.phone ? "border-red-500" : ""}`}
                   onChange={(e) => handleChange("phone", e.target.value.replace(/\D/g, ""))} />
                 {errors.phone && <p className="error">{errors.phone}</p>}
               </div>
 
-              {/* GENDER */}
               <div className="flex gap-3">
                 {["Male", "Female", "Other"].map(g => (
                   <button key={g} onClick={() => handleChange("gender", g)}
@@ -358,7 +343,6 @@ export default function EnrollNow() {
                 ))}
               </div>
 
-              {/* COURSE CARDS */}
               <div>
                 <p className="text-sm text-slate-400 mb-3">Select Course *</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -381,7 +365,6 @@ export default function EnrollNow() {
                 {errors.course && <p className="error mt-2">{errors.course}</p>}
               </div>
 
-              {/* SUBMIT */}
               <button
                 onClick={isHoudini ? handleHoudiniNext1 : handleSimpleSubmit}
                 disabled={isSubmitting}
