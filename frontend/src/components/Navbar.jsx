@@ -352,8 +352,7 @@ export default function Navbar() {
                     ref={(el) => {
                       if (el && window.google) {
                         window.google.accounts.id.initialize({
-                          client_id:
-                            "632273202115-8t4nelqmq8f2l08meqm81me0gk7894si.apps.googleusercontent.com",
+                          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
                           callback: async (response) => {
                             try {
                               const { googleAuthApi } = await import("../api/client");
