@@ -108,8 +108,8 @@ export default function Navbar() {
     setSignUpLoading(true);
     try {
       await register({
-        first_name: signUpData.firstName,
-        last_name: signUpData.lastName,
+        firstName: signUpData.firstName,
+        lastName: signUpData.lastName,
         email: signUpData.email,
         password: signUpData.password,
         phone: signUpData.phone || null,
