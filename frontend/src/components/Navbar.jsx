@@ -355,8 +355,8 @@ export default function Navbar() {
                           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
                           callback: async (response) => {
                             try {
-                              const { googleAuthApi } = await import("../api/client");
-                              const res = await googleAuthApi.login(response.credential);
+                              const { authApi } = await import("../api/client");
+                              const res = await authApi.googleLogin(response.credential);
                               const { access_token, refresh_token, user: u } = res.data;
                               localStorage.setItem("cis_token", access_token);
                               localStorage.setItem("cis_refresh_token", refresh_token);
